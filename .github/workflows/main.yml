@@ -1,0 +1,28 @@
+name: Auto Legym
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "35 8,10 * * *"
+
+jobs:
+  AutoSign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.6"
+          architecture: "x64"
+
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+
+      - name: Run App
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          KEYWORD: ${{ secrets.KEYWORD }}
+        run: python -u src/main.py
